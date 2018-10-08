@@ -56,7 +56,19 @@ module CamtParser
     def additional_information
       @additional_information ||= @xml_data.xpath('AddtlNtryInf/text()').text
     end
-    alias_method :description, :additional_information
+
+    def description
+		# search beginning of string (+6 chars own length)
+		index = additional_information.index("/REMI/")
+		return if index.nil?
+		index += 6
+		# strip beginning
+		description = additional_information[index..-1]
+
+		index = description.index("/") - 1
+		# strip end
+		description = description[0..index]
+	end
 
     def charges
       @charges ||= CamtParser::Charges.new(@xml_data.xpath('Chrgs'))

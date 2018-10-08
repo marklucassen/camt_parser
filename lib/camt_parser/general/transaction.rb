@@ -15,6 +15,11 @@ module CamtParser
       CamtParser::Misc.to_amount_in_cents(@amount)
     end
 
+	# integer with negatives
+    def mutation_in_cents
+		(debit? ? -amount_in_cents : amount_in_cents)
+	end
+
     def currency
       @currency
     end
