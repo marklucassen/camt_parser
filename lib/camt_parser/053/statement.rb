@@ -26,7 +26,7 @@ module CamtParser
       end
 
       def entries
-        @entries ||= @xml_data.xpath('Ntry').map{ |x| Entry.new(x) }
+        @entries = @xml_data.xpath('Ntry').map{ |x| Entry.new(x) }
       end
 
       def legal_sequence_number

@@ -25,11 +25,11 @@ module CamtParser
     end
 
     def creditor
-      @creditor ||= CamtParser::Creditor.new(@xml_data)
+      @creditor = CamtParser::Creditor.new(@xml_data)
     end
 
     def debitor
-      @debitor ||= CamtParser::Debitor.new(@xml_data)
+      @debitor = CamtParser::Debitor.new(@xml_data)
     end
 
     def name
