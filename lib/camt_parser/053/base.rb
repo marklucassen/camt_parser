@@ -6,8 +6,8 @@ module CamtParser
       def initialize(xml_data)
 		  grphdr = xml_data.at_xpath('BkToCstmrStmt/GrpHdr')
         @group_header = GroupHeader.new(grphdr)
-		# statements = xml_data.at_xpath('BkToCstmrStmt/Stmt')
-        # @statements = statements.map{ |x| Statement.new(x) }
+		statements = xml_data.at_xpath('BkToCstmrStmt/Stmt')
+        @statements = statements.map{ |x| Statement.new(x) }
       end
     end
   end
