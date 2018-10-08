@@ -1,5 +1,5 @@
 # encoding: utf-8
-require "nokogiri"
+require "oga"
 
 require "time"
 require "bigdecimal"

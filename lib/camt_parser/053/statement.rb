@@ -62,7 +62,7 @@ module CamtParser
       end
 
       def self.parse(xml)
-        self.new Nokogiri::XML(xml).xpath('Stmt')
+		  self.new Oga.parseXML(xml).xpath('Stmt')
       end
     end
   end

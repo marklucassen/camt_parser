@@ -1,7 +1,7 @@
 module CamtParser
   class Xml
     def self.parse(doc)
-      raise CamtParser::Errors::NotXMLError, doc.class unless doc.is_a? Nokogiri::XML::Document
+      # raise CamtParser::Errors::NotXMLError, doc.class unless doc.is_a? Nokogiri::XML::Document
 
       namespaces = doc.namespaces['xmlns']
       doc.remove_namespaces!
