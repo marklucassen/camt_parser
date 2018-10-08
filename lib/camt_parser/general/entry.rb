@@ -18,7 +18,7 @@ module CamtParser
     end
 
     def debit
-      @debit ||= @xml_data.at_xpath('CdtDbtInd/text()').text.upcase == 'DBIT'
+      @debit = @xml_data.at_xpath('CdtDbtInd/text()').text.upcase == 'DBIT'
     end
 
     def value_date
@@ -26,7 +26,7 @@ module CamtParser
     end
 
     def booking_date
-      @booking_date ||= Date.parse(@xml_data.at_xpath('BookgDt/Dt/text()').text)
+      @booking_date = Date.parse(@xml_data.at_xpath('BookgDt/Dt/text()').text)
     end
 
     def transactions
@@ -71,7 +71,7 @@ module CamtParser
 	end
 
     def charges
-      @charges ||= CamtParser::Charges.new(@xml_data.at_xpath('Chrgs'))
+      @charges = CamtParser::Charges.new(@xml_data.at_xpath('Chrgs'))
     end
 
     private

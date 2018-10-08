@@ -5,6 +5,8 @@ module CamtParser
       @debit    = debit
       @amount   = parse_amount || amount
       @currency = parse_currency || currency
+      @creditor = CamtParser::Creditor.new(@xml_data)
+      @debitor = CamtParser::Debitor.new(@xml_data)
     end
 
     def amount
@@ -25,11 +27,11 @@ module CamtParser
     end
 
     def creditor
-      @creditor = CamtParser::Creditor.new(@xml_data)
+      @creditor
     end
 
     def debitor
-      @debitor = CamtParser::Debitor.new(@xml_data)
+      @debitor
     end
 
     def name
@@ -61,7 +63,7 @@ module CamtParser
     end
 
     def remittance_information
-      @remittance_information ||= begin
+      @remittance_information = begin
         if (x = @xml_data.at_xpath('RmtInf/Ustrd')).empty?
           nil
         else
@@ -71,39 +73,39 @@ module CamtParser
     end
 
     def swift_code
-      @swift_code ||= @xml_data.at_xpath('BkTxCd/Prtry/Cd/text()').text.split('+')[0]
+      @swift_code = @xml_data.at_xpath('BkTxCd/Prtry/Cd/text()').text.split('+')[0]
     end
 
     def reference
-      @reference ||= @xml_data.at_xpath('Refs/InstrId/text()').text
+      @reference = @xml_data.at_xpath('Refs/InstrId/text()').text
     end
 
     def bank_reference # May be missing
-      @bank_reference ||= @xml_data.at_xpath('Refs/AcctSvcrRef/text()').text
+      @bank_reference = @xml_data.at_xpath('Refs/AcctSvcrRef/text()').text
     end
 
     def end_to_end_reference # May be missing
-      @end_to_end_reference ||= @xml_data.at_xpath('Refs/EndToEndId/text()').text
+      @end_to_end_reference = @xml_data.at_xpath('Refs/EndToEndId/text()').text
     end
 
     def mandate_reference # May be missing
-      @mandate_reference ||= @xml_data.at_xpath('Refs/MndtId/text()').text
+      @mandate_reference = @xml_data.at_xpath('Refs/MndtId/text()').text
     end
 
     def creditor_reference # May be missing
-      @creditor_reference ||= @xml_data.at_xpath('RmtInf/Strd/CdtrRefInf/Ref/text()').text
+      @creditor_reference = @xml_data.at_xpath('RmtInf/Strd/CdtrRefInf/Ref/text()').text
     end
 
     def transaction_id # May be missing
-      @transaction_id ||= @xml_data.at_xpath('Refs/TxId/text()').text
+      @transaction_id = @xml_data.at_xpath('Refs/TxId/text()').text
     end
 
     def creditor_identifier # May be missing
-      @creditor_identifier ||= @xml_data.at_xpath('RltdPties/Cdtr/Id/PrvtId/Othr/Id/text()').text
+      @creditor_identifier = @xml_data.at_xpath('RltdPties/Cdtr/Id/PrvtId/Othr/Id/text()').text
     end
 
     def payment_information # May be missing
-      @payment_information ||= @xml_data.at_xpath('Refs/PmtInfId/text()').text
+      @payment_information = @xml_data.at_xpath('Refs/PmtInfId/text()').text
     end
 
     private

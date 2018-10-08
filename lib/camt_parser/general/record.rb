@@ -3,6 +3,7 @@ module CamtParser
     def initialize(xml_data)
       @xml_data = xml_data
       @amount = @xml_data.at_xpath('Amt/text()').text
+      @debit = @xml_data.at_xpath('CdtDbtInd/text()').text.upcase == 'DBIT'
     end
 
     def amount
@@ -14,19 +15,19 @@ module CamtParser
     end
 
     def currency
-      @currency ||= @xml_data.at_xpath('Amt/@Ccy').text
+      @currency = @xml_data.at_xpath('Amt/@Ccy').text
     end
 
     def type
-      @type ||= CamtParser::Type::Builder.build_type(@xml_data.at_xpath('Tp'))
+      @type = CamtParser::Type::Builder.build_type(@xml_data.at_xpath('Tp'))
     end
 
     def charges_included?
-      @charges_included ||= @xml_data.at_xpath('ChrgInclInd/text()').text.downcase == 'true'
+      @charges_included = @xml_data.at_xpath('ChrgInclInd/text()').text.downcase == 'true'
     end
 
     def debit
-      @debit ||= @xml_data.at_xpath('CdtDbtInd/text()').text.upcase == 'DBIT'
+      @debit
     end
 
     def credit?
