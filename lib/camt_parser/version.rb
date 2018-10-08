@@ -1,3 +1,3 @@
 module CamtParser
-  VERSION = "2.3.5"
+  VERSION = "4.0.0"
 end
