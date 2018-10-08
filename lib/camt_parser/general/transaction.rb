@@ -3,8 +3,8 @@ module CamtParser
     def initialize(xml_data, debit, amount = nil, currency = nil)
       # @xml_data = xml_data
       @debit    = debit
-      @amount   = parse_amount || amount
-      @currency = parse_currency || currency
+      @amount   = parse_amount(xml_data) || amount
+      @currency = parse_currency(xml_data) || currency
       @creditor = CamtParser::Creditor.new(xml_data)
       @debitor = CamtParser::Debitor.new(xml_data)
     end
