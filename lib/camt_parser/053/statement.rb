@@ -14,15 +14,15 @@ module CamtParser
       end
 
       def from_date_time
-        @from_date_time ||= (x = @xml_data.at_xpath('FrToDt/FrDtTm')).empty? ? nil : Time.parse(x.first.content)
+        @from_date_time ||= (x = @xml_data.at_xpath('FrToDt/FrDtTm')).empty? ? nil : Time.parse(x.content)
       end
 
       def to_date_time
-        @to_date_time ||= (x = @xml_data.at_xpath('FrToDt/ToDtTm')).empty? ? nil : Time.parse(x.first.content)
+        @to_date_time ||= (x = @xml_data.at_xpath('FrToDt/ToDtTm')).empty? ? nil : Time.parse(x.content)
       end
 
       def account
-        @account ||= Account.new(@xml_data.at_xpath('Acct').first)
+        @account ||= Account.new(@xml_data.at_xpath('Acct'))
       end
 
       def entries
@@ -39,7 +39,7 @@ module CamtParser
 
       def opening_balance
         @opening_balance ||= begin
-          bal = @xml_data.at_xpath('Bal/Tp//Cd[contains(text(), "OPBD") or contains(text(), "PRCD")]').first.ancestors('Bal')
+          bal = @xml_data.at_xpath('Bal/Tp//Cd[contains(text(), "OPBD") or contains(text(), "PRCD")]').ancestors('Bal')
           date = bal.at_xpath('Dt/Dt/text()').text
           currency = bal.at_xpath('Amt').attribute('Ccy').value
           AccountBalance.new bal.at_xpath('Amt/text()').text, currency, date, true
@@ -49,7 +49,7 @@ module CamtParser
 
       def closing_balance
         @closing_balance ||= begin
-          bal = @xml_data.at_xpath('Bal/Tp//Cd[contains(text(), "CLBD")]').first.ancestors('Bal')
+          bal = @xml_data.at_xpath('Bal/Tp//Cd[contains(text(), "CLBD")]').ancestors('Bal')
           date = bal.at_xpath('Dt/Dt/text()').text
           currency = bal.at_xpath('Amt').attribute('Ccy').value
           AccountBalance.new bal.at_xpath('Amt/text()').text, currency, date, true
