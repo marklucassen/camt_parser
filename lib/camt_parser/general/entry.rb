@@ -22,7 +22,7 @@ module CamtParser
     end
 
     def value_date
-      @value_date ||= Date.parse(@xml_data.at_xpath('ValDt/Dt/text()').text)
+      @value_date = Date.parse(@xml_data.at_xpath('ValDt/Dt/text()').text)
     end
 
     def booking_date
@@ -54,7 +54,7 @@ module CamtParser
     end
 
     def additional_information
-      @additional_information ||= @xml_data.at_xpath('AddtlNtryInf/text()').text
+      @additional_information = @xml_data.at_xpath('AddtlNtryInf/text()').text
     end
 
     def description
