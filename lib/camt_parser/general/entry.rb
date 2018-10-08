@@ -1,8 +1,14 @@
 module CamtParser
   class Entry
     def initialize(xml_data)
-      @xml_data = xml_data
-      @amount = @xml_data.at_xpath('Amt/text()').text
+      # @xml_data = xml_data
+      @amount = xml_data.at_xpath('Amt/text()').text
+      @currency = xml_data.at_xpath('Amt/@Ccy').text
+      @debit = xml_data.at_xpath('CdtDbtInd/text()').text.upcase == 'DBIT'
+      @value_date = Date.parse(xml_data.at_xpath('ValDt/Dt/text()').text)
+      @booking_date = Date.parse(xml_data.at_xpath('BookgDt/Dt/text()').text)
+      @transactions = parse_transactions(xml_data)
+      @additional_information = xml_data.at_xpath('AddtlNtryInf/text()').text
     end
 
     def amount
@@ -14,23 +20,23 @@ module CamtParser
     end
 
     def currency
-      @currency ||= @xml_data.at_xpath('Amt/@Ccy').text
+      @currency
     end
 
     def debit
-      @debit = @xml_data.at_xpath('CdtDbtInd/text()').text.upcase == 'DBIT'
+      @debit
     end
 
     def value_date
-      @value_date = Date.parse(@xml_data.at_xpath('ValDt/Dt/text()').text)
+      @value_date
     end
 
     def booking_date
-      @booking_date = Date.parse(@xml_data.at_xpath('BookgDt/Dt/text()').text)
+      @booking_date
     end
 
     def transactions
-      @transactions = parse_transactions
+      @transactions
     end
 
     def credit?
@@ -45,16 +51,16 @@ module CamtParser
       credit? ? 1 : -1
     end
 
-    def reversal?
-      @reversal ||= @xml_data.at_xpath('RvslInd/text()').text.downcase == 'true'
-    end
+    # def reversal?
+    #   @reversal ||= @xml_data.at_xpath('RvslInd/text()').text.downcase == 'true'
+    # end
 
-    def booked?
-      @booked ||= @xml_data.at_xpath('Sts/text()').text.upcase == 'BOOK'
-    end
+    # def booked?
+    #   @booked ||= @xml_data.at_xpath('Sts/text()').text.upcase == 'BOOK'
+    # end
 
     def additional_information
-      @additional_information = @xml_data.at_xpath('AddtlNtryInf/text()').text
+      @additional_information
     end
 
     def description
@@ -70,24 +76,24 @@ module CamtParser
 		description = description[0..index]
 	end
 
-    def charges
-      @charges = CamtParser::Charges.new(@xml_data.at_xpath('Chrgs'))
-    end
+    # def charges
+    #   @charges = CamtParser::Charges.new(@xml_data.at_xpath('Chrgs'))
+    # end
 
     private
 
-    def parse_transactions
-      transaction_details = @xml_data.xpath('NtryDtls/TxDtls')
+    def parse_transactions(xml_data)
+      transaction_details = xml_data.xpath('NtryDtls/TxDtls')
 
       amt = nil
       ccy = nil
 
       if transaction_details.length == 1
-		  amt = @xml_data.at_xpath('Amt/text()').text
-		  ccy = @xml_data.at_xpath('Amt/@Ccy').text
+		  amt = xml_data.at_xpath('Amt/text()').text
+		  ccy = xml_data.at_xpath('Amt/@Ccy').text
       end
 
-      @xml_data.xpath('NtryDtls/TxDtls').map { |x| Transaction.new(x, debit?, amt, ccy) }
+      xml_data.xpath('NtryDtls/TxDtls').map { |x| Transaction.new(x, debit?, amt, ccy) }
     end
   end
 end
