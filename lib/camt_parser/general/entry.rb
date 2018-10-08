@@ -30,7 +30,7 @@ module CamtParser
     end
 
     def transactions
-      @transactions ||= parse_transactions
+      @transactions = parse_transactions
     end
 
     def credit?
