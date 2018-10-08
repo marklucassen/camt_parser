@@ -4,6 +4,7 @@ module CamtParser
       def initialize(xml_data)
         # @xml_data = xml_data
         @entries = xml_data.xpath('Ntry').map{ |x| Entry.new(x) }
+        @account = Account.new(xml_data.at_xpath('Acct'))
       end
 
       # def identification
@@ -22,9 +23,9 @@ module CamtParser
       #   @to_date_time = (x = @xml_data.at_xpath('FrToDt/ToDtTm')).empty? ? nil : Time.parse(x.content)
       # end
 
-      # def account
-      #   @account = Account.new(@xml_data.at_xpath('Acct'))
-      # end
+      def account
+        @account
+      end
 
       def entries
         @entries
