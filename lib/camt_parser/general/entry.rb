@@ -83,8 +83,8 @@ module CamtParser
       ccy = nil
 
       if transaction_details.length == 1
-		  amt = @xml_data.first.xpath('Amt/text()').text
-		  ccy = @xml_data.first.xpath('Amt/@Ccy').text
+		  amt = @xml_data.at_xpath('Amt/text()').text
+		  ccy = @xml_data.at_xpath('Amt/@Ccy').text
       end
 
       @xml_data.xpath('NtryDtls/TxDtls').map { |x| Transaction.new(x, debit?, amt, ccy) }
