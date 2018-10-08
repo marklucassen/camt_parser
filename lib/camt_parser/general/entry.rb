@@ -2,7 +2,7 @@ module CamtParser
   class Entry
     def initialize(xml_data)
       @xml_data = xml_data
-      @amount = @xml_data.xpath('Amt/text()').text
+      @amount = @xml_data.at_xpath('Amt/text()').text
     end
 
     def amount
@@ -14,19 +14,19 @@ module CamtParser
     end
 
     def currency
-      @currency ||= @xml_data.xpath('Amt/@Ccy').text
+      @currency ||= @xml_data.at_xpath('Amt/@Ccy').text
     end
 
     def debit
-      @debit ||= @xml_data.xpath('CdtDbtInd/text()').text.upcase == 'DBIT'
+      @debit ||= @xml_data.at_xpath('CdtDbtInd/text()').text.upcase == 'DBIT'
     end
 
     def value_date
-      @value_date ||= Date.parse(@xml_data.xpath('ValDt/Dt/text()').text)
+      @value_date ||= Date.parse(@xml_data.at_xpath('ValDt/Dt/text()').text)
     end
 
     def booking_date
-      @booking_date ||= Date.parse(@xml_data.xpath('BookgDt/Dt/text()').text)
+      @booking_date ||= Date.parse(@xml_data.at_xpath('BookgDt/Dt/text()').text)
     end
 
     def transactions
@@ -46,15 +46,15 @@ module CamtParser
     end
 
     def reversal?
-      @reversal ||= @xml_data.xpath('RvslInd/text()').text.downcase == 'true'
+      @reversal ||= @xml_data.at_xpath('RvslInd/text()').text.downcase == 'true'
     end
 
     def booked?
-      @booked ||= @xml_data.xpath('Sts/text()').text.upcase == 'BOOK'
+      @booked ||= @xml_data.at_xpath('Sts/text()').text.upcase == 'BOOK'
     end
 
     def additional_information
-      @additional_information ||= @xml_data.xpath('AddtlNtryInf/text()').text
+      @additional_information ||= @xml_data.at_xpath('AddtlNtryInf/text()').text
     end
 
     def description
@@ -71,7 +71,7 @@ module CamtParser
 	end
 
     def charges
-      @charges ||= CamtParser::Charges.new(@xml_data.xpath('Chrgs'))
+      @charges ||= CamtParser::Charges.new(@xml_data.at_xpath('Chrgs'))
     end
 
     private
@@ -83,8 +83,8 @@ module CamtParser
       ccy = nil
 
       if transaction_details.length == 1
-        amt = @xml_data.xpath('Amt/text()').text
-        ccy = @xml_data.xpath('Amt/@Ccy').text
+		  amt = @xml_data.first.xpath('Amt/text()').text
+		  ccy = @xml_data.first.xpath('Amt/@Ccy').text
       end
 
       @xml_data.xpath('NtryDtls/TxDtls').map { |x| Transaction.new(x, debit?, amt, ccy) }
