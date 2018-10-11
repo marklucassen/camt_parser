@@ -63,9 +63,9 @@ module CamtParser
       #   @xml_data.to_s
       # end
 
-      def self.parse(xml)
-		  self.new Oga.parse_xml(xml).at_xpath('Stmt')
-      end
+      # def self.parse(xml)
+		  # self.new Oga.parse_xml(xml).at_xpath('Stmt')
+      # end
     end
   end
 end
