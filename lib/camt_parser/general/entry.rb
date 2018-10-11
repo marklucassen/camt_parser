@@ -8,7 +8,8 @@ module CamtParser
       @value_date = Date.parse(xml_data.at_xpath('ValDt/Dt/text()').text)
       @booking_date = Date.parse(xml_data.at_xpath('BookgDt/Dt/text()').text)
       @transactions = parse_transactions(xml_data)
-      @additional_information = xml_data.at_xpath('AddtlNtryInf/text()').text
+      additional_information = xml_data.at_xpath('AddtlNtryInf/text()')
+	  @additional_information = additional_information.text unless additional_information.nil?
     end
 
     def amount
@@ -64,6 +65,7 @@ module CamtParser
     end
 
     def description
+		return if additional_information.nil?
 		# search beginning of string (+6 chars own length)
 		index = additional_information.index("/REMI/")
 		return if index.nil?

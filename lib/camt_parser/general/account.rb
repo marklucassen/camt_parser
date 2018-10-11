@@ -1,9 +1,12 @@
 module CamtParser
   class Account
     def initialize(xml_data)
-      @iban = xml_data.at_xpath('Id/IBAN/text()').text
-      @bic = xml_data.at_xpath('Svcr/FinInstnId/BIC/text()').text
-      @bank_name = xml_data.at_xpath('Svcr/FinInstnId/Nm/text()').text
+      iban = xml_data.at_xpath('Id/IBAN/text()')
+	  @iban = iban.text unless iban.nil?
+      bic = xml_data.at_xpath('Svcr/FinInstnId/BIC/text()')
+	  @bic = bic.text unless bic.nil?
+      bank_name = xml_data.at_xpath('Svcr/FinInstnId/Nm/text()')
+	  @bank_name = bank_name.text unless bank_name.nil?
     end
 
     def iban
