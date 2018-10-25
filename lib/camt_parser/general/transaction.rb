@@ -1,7 +1,8 @@
 module CamtParser
   class Transaction
+    attr_reader :currency, :creditor, :debitor, :debit
+
     def initialize(xml_data, debit, amount = nil, currency = nil)
-      # @xml_data = xml_data
       @debit    = debit
       @amount   = parse_amount(xml_data) || amount
       @currency = parse_currency(xml_data) || currency
@@ -17,21 +18,9 @@ module CamtParser
       CamtParser::Misc.to_amount_in_cents(@amount)
     end
 
-	# integer with negatives
+    # integer with negatives
     def mutation_in_cents
-		(debit? ? -amount_in_cents : amount_in_cents)
-	end
-
-    def currency
-      @currency
-    end
-
-    def creditor
-      @creditor
-    end
-
-    def debitor
-      @debitor
+      (debit? ? -amount_in_cents : amount_in_cents)
     end
 
     def name
@@ -52,10 +41,6 @@ module CamtParser
 
     def debit?
       debit
-    end
-
-    def debit
-      @debit
     end
 
     def sign

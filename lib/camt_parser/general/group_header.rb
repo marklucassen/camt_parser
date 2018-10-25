@@ -5,12 +5,12 @@ module CamtParser
     attr_reader :message_id, :creation_date_time, :additional_information, :message_pagination
 
     def initialize(xml_data)
-		@message_id             = xml_data.at_xpath('MsgId/text()')
-		@message_id             = @message_id.text unless @message_id.nil?
-		@creation_date_time     = Time.parse(xml_data.at_xpath('CreDtTm/text()').text) unless xml_data.at_xpath('CreDtTm/text()').nil?
+      @message_id             = xml_data.at_xpath('MsgId/text()')
+      @message_id             = @message_id.text unless @message_id.nil?
+      @creation_date_time     = Time.parse(xml_data.at_xpath('CreDtTm/text()').text) unless xml_data.at_xpath('CreDtTm/text()').nil?
       @message_pagination     = (x = xml_data.at_xpath('MsgPgntn')).nil? ? nil : MessagePagination.new(x)
       @additional_information = xml_data.at_xpath('AddtlInf/text()')
-	  @additional_information = @additional_information.text unless @additional_information.nil?
+      @additional_information = @additional_information.text unless @additional_information.nil?
     end
   end
 

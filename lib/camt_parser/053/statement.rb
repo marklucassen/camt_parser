@@ -1,8 +1,9 @@
 module CamtParser
   module Format053
     class Statement
+      attr_reader :entries, :account
+
       def initialize(xml_data)
-        # @xml_data = xml_data
         @entries = xml_data.xpath('Ntry').map{ |x| Entry.new(x) }
         @account = Account.new(xml_data.at_xpath('Acct'))
       end
@@ -22,14 +23,6 @@ module CamtParser
       # def to_date_time
       #   @to_date_time = (x = @xml_data.at_xpath('FrToDt/ToDtTm')).empty? ? nil : Time.parse(x.content)
       # end
-
-      def account
-        @account
-      end
-
-      def entries
-        @entries
-      end
 
       # def legal_sequence_number
       #   @legal_sequence_number = @xml_data.at_xpath('LglSeqNb/text()').text
@@ -64,7 +57,7 @@ module CamtParser
       # end
 
       # def self.parse(xml)
-		  # self.new Oga.parse_xml(xml).at_xpath('Stmt')
+      # self.new Oga.parse_xml(xml).at_xpath('Stmt')
       # end
     end
   end
